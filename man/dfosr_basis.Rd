@@ -5,10 +5,22 @@
 \title{MCMC Sampling Algorithm for the Dynamic Function-on-Scalars Regression Model
 with Known Basis Expansion}
 \usage{
-dfosr_basis(Y, tau, X = NULL, use_dynamic_reg = TRUE, basis = "fpc",
-  K = NULL, pve = 0.99, use_shrinkage_priors = FALSE, nsave = 1000,
-  nburn = 1000, nskip = 2, mcmc_params = list("beta", "fk", "alpha",
-  "mu_k", "ar_phi"), X_Tp1 = 1, use_obs_SV = FALSE)
+dfosr_basis(
+  Y,
+  tau,
+  X = NULL,
+  use_dynamic_reg = TRUE,
+  basis = "fpc",
+  K = NULL,
+  pve = 0.99,
+  use_shrinkage_priors = FALSE,
+  nsave = 1000,
+  nburn = 1000,
+  nskip = 2,
+  mcmc_params = list("beta", "fk", "alpha", "mu_k", "ar_phi"),
+  X_Tp1 = 1,
+  use_obs_SV = FALSE
+)
 }
 \arguments{
 \item{Y}{the \code{T x m} data observation matrix, where \code{T} is the number of time points and \code{m} is the number of observation points (\code{NA}s allowed)}
@@ -17,13 +29,11 @@ dfosr_basis(Y, tau, X = NULL, use_dynamic_reg = TRUE, basis = "fpc",
 
 \item{X}{the \code{T x p} matrix of predictors; if NULL, only include an intercept}
 
-\item{use_dynamic_reg}{logical; if TRUE, regression coefficients are dynamic
-(with random walk models)}
+\item{use_dynamic_reg}{logical; if TRUE, regression coefficients are dynamic (with random walk models)}
 
 \item{basis}{the functional basis to use, which will be orthogonalized; must be one of "fpc", "spline", or "ns" (Nelson-Siegel)}
 
-\item{K}{the number of FPCs to use; if NULL, select to explain \code{pve}% of variability
-(ignored for other basis functions)}
+\item{K}{the number of FPCs to use; if NULL, select to explain \code{pve}\% of variability (ignored for other basis functions)}
 
 \item{pve}{proportion of variability explained for the FPC basis; only used if \code{K} is NULL}
 
@@ -33,11 +43,9 @@ dfosr_basis(Y, tau, X = NULL, use_dynamic_reg = TRUE, basis = "fpc",
 
 \item{nburn}{number of MCMC iterations to discard (burin-in)}
 
-\item{nskip}{number of MCMC iterations to skip between saving iterations,
-i.e., save every (nskip + 1)th draw}
+\item{nskip}{number of MCMC iterations to skip between saving iterations, i.e., save every (nskip + 1)th draw}
 
-\item{mcmc_params}{named list of parameters for which we store the MCMC output;
-must be one or more of
+\item{mcmc_params}{named list of parameters for which we store the MCMC output; must be one or more of
 \itemize{
 \item "beta" (dynamic factors)
 \item "fk" (loading curves)
@@ -51,8 +59,7 @@ must be one or more of
 
 \item{X_Tp1}{the \code{p x 1} matrix of predictors at the forecasting time point \code{T + 1}}
 
-\item{use_obs_SV}{logical; when TRUE, include a stochastic volatility model
-for the observation error variance}
+\item{use_obs_SV}{logical; when TRUE, include a stochastic volatility model for the observation error variance}
 }
 \value{
 A named list of the \code{nsave} MCMC samples for the parameters named in \code{mcmc_params}

@@ -15,7 +15,7 @@ sampleARphi(yt, phi_j, sigma_tj, prior_phi = NULL)
 \item{sigma_tj}{the \code{(T-1) x p} matrix or \code{p x 1} vector of error standard deviations}
 
 \item{prior_phi}{the parameters of the prior for the AR(1) coefficients \code{phi_j};
-either \code{NULL} for uniform on [-0.99,0.99] or a 2-dimensional vector of (shape1, shape2) for a Beta prior
+either \code{NULL} for uniform on \link{-0.99,0.99} or a 2-dimensional vector of (shape1, shape2) for a Beta prior
 on \code{[(phi_j + 1)/2]}}
 }
 \value{

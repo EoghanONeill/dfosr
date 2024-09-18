@@ -12,7 +12,7 @@ sampleCommonSV(omega, svParams, prior_phi = c(20, 1.5))
 \item{svParams}{list of parameters to be updated (see Value below)}
 
 \item{prior_phi}{the parameters of the prior for the log-volatilty AR(1) coefficient \code{h_phi};
-either \code{NULL} for uniform on [-1,1] or a 2-dimensional vector of (shape1, shape2) for a Beta prior
+either \code{NULL} for uniform on \link{-1,1} or a 2-dimensional vector of (shape1, shape2) for a Beta prior
 on \code{[(h_phi + 1)/2]}}
 }
 \value{

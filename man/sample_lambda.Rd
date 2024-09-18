@@ -4,8 +4,14 @@
 \alias{sample_lambda}
 \title{Factor loading curve smoothing parameter sampler}
 \usage{
-sample_lambda(lambda, Psi, Omega = NULL, d = 1, uniformPrior = TRUE,
-  orderLambdas = TRUE)
+sample_lambda(
+  lambda,
+  Psi,
+  Omega = NULL,
+  d = 1,
+  uniformPrior = TRUE,
+  orderLambdas = TRUE
+)
 }
 \arguments{
 \item{lambda}{\code{K}-dimensional vector of smoothing parameters (prior precisions)

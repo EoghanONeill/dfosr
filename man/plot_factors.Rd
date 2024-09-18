@@ -14,5 +14,5 @@ distribution of the \code{T x K} matrix of factors, \code{beta}}
 }
 \description{
 Plot posterior mean of the factors together with the simultaneous and pointwise
-95\% credible bands.
+95\\% credible bands.
 }

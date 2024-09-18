@@ -1,9 +1,10 @@
 Package: dfosr
-Type: Package
 Title: Dynamic Function-on-Scalars Regression
 Version: 0.1.0
-Author: Daniel R. Kowal <daniel.r.kowal@gmail.com>
-Maintainer: Daniel R. Kowal <daniel.r.kowal@gmail.com>
+Authors@R: 
+    c(person("Eoghan", "O'Neill", email =  "oneill.eoghan.1@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-1274-4248")),
+           person("Daniel R.", "Kowal", email =  "daniel.r.kowal@gmail.com", role = c("aut")))
 Description: Bayesian inference for dynamic function-on-scalars regression,
     where a functional data response is regressed on scalar predictors. 
     Here, both the functional response and the scalar predictors may be time-ordered. 
@@ -11,9 +12,28 @@ Description: Bayesian inference for dynamic function-on-scalars regression,
     which is learned from the data. The regression coefficients themselves are functions,
     and may be dynamic as well. The model is represented using a state space construction,
     which allows for time-varying parameter regression and autocorrelated errors. 
-License: GPL-3
+License: GPL (>= 3)
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    coda, 
+    fdapace, 
+    fields, 
+    gglasso, 
+    graphics, 
+    grDevices,
+    KFAS,
+    lars, 
+    Matrix, 
+    Rcpp, 
+    refund, 
+    truncdist
+Depends: 
+    R (>= 2.10)
 LazyData: true
-LinkingTo: Rcpp, RcppArmadillo
-Imports: coda, fdapace, fields, gglasso, graphics, grDevices, KFAS, lars, Matrix, Rcpp, refund, truncdist
-RoxygenNote: 6.1.1
+URL: https://github.com/EoghanONeill/dfosr
+BugReports: https://github.com/EoghanONeill/dfosr/issues
+LinkingTo: 
+    Rcpp, 
+    RcppArmadillo

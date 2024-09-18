@@ -14,5 +14,5 @@ distribution of the \code{m x K} matrix of FLCs, \code{fk}}
 }
 \description{
 Plot posterior mean of the factor loading curves together with the simultaneous
-and pointwise 95\% credible bands.
+and pointwise 95\\% credible bands.
 }

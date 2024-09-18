@@ -1,6 +1,8 @@
 #----------------------------------------------------------------------------
-#' Forecast with a dynamic function-on-scalars regression model
 #'
+#' @title forecast_dfosr
+#' @description
+#' Forecast with a dynamic function-on-scalars regression model
 #' Compute the one-step forecasting estimate
 #' under a dynamic function-on-scalars regression model.
 #'
@@ -986,7 +988,7 @@ plot_flc = function(post_fk, tau = NULL){
     ci = HPDinterval(as.mcmc(post_fk[,,k]));
     # Credible bands (w/ error catch):
     cb = try(credBands(as.mcmc(post_fk[,,k])), silent = TRUE)
-    if(class(cb) == "try-error") cb = ci
+    if(length(cb) == 1){ if(class(cb) == "try-error"){ cb = ci}}
     polygon(c(tau, rev(tau)), c(cb[,2], rev(cb[,1])), col='grey50', border=NA);
     polygon(c(tau, rev(tau)), c(ci[,2], rev(ci[,1])), col='grey', border=NA);
     lines(tau,colMeans(post_fk[,,k]), lwd=8, col=k)
@@ -1160,14 +1162,12 @@ uni.slice <- function (x0, g, w=1, m=Inf, lower=-Inf, upper=+Inf, gx0=NULL)
 
 }
 
-.onUnload <- function (libpath) {
-  library.dynam.unload("dfosr", libpath)
-}
+# .onUnload <- function (libpath) {
+#   library.dynam.unload("dfosr", libpath)
+# }
 
 # Just add these for general use:
 #' @importFrom stats predict quantile rgamma rnorm sd splinefun var rexp runif arima arima.sim dbeta dgamma dist dnorm dunif fitted lm median poly rbinom dnbinom rnbinom rpois
 NULL
 
-#' @useDynLib dfosr
-#' @importFrom Rcpp sourceCpp
-NULL
+

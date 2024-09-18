@@ -5,9 +5,20 @@
 \title{MCMC Sampling Algorithm for the Function-on-Scalars Regression Model with
 Time Series Errors}
 \usage{
-fosr_ar(Y, tau, X = NULL, K = NULL, nsave = 1000, nburn = 1000,
-  nskip = 3, mcmc_params = list("beta", "fk", "alpha"), X_Tp1 = 1,
-  use_obs_SV = FALSE, includeBasisInnovation = FALSE, Con_mat = NULL)
+fosr_ar(
+  Y,
+  tau,
+  X = NULL,
+  K = NULL,
+  nsave = 1000,
+  nburn = 1000,
+  nskip = 3,
+  mcmc_params = list("beta", "fk", "alpha"),
+  X_Tp1 = 1,
+  use_obs_SV = FALSE,
+  includeBasisInnovation = FALSE,
+  Con_mat = NULL
+)
 }
 \arguments{
 \item{Y}{the \code{T x m} data observation matrix, where \code{T} is the number of time points and \code{m} is the number of observation points (\code{NA}s allowed)}

@@ -4,8 +4,15 @@
 \alias{fosr_select}
 \title{Decoupling shrinkage and selection for function-on-scalars regression}
 \usage{
-fosr_select(X, post_alpha, post_trace_sigma_2, weighted = TRUE,
-  alpha_level = 0.1, remove_int = TRUE, include_plot = TRUE)
+fosr_select(
+  X,
+  post_alpha,
+  post_trace_sigma_2,
+  weighted = TRUE,
+  alpha_level = 0.1,
+  remove_int = TRUE,
+  include_plot = TRUE
+)
 }
 \arguments{
 \item{X}{\code{n x p} matrix of predictors}

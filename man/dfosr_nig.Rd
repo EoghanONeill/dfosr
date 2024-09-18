@@ -5,10 +5,21 @@
 \title{MCMC Sampling Algorithm for the Dynamic Function-on-Scalars Regression Model
 with NIG Innovations}
 \usage{
-dfosr_nig(Y, tau, X = NULL, K = NULL, use_dynamic_reg = TRUE,
-  nsave = 1000, nburn = 1000, nskip = 2, mcmc_params = list("beta",
-  "fk", "alpha", "mu_k", "ar_phi"), X_Tp1 = 1, use_obs_SV = FALSE,
-  includeBasisInnovation = FALSE, Con_mat = NULL)
+dfosr_nig(
+  Y,
+  tau,
+  X = NULL,
+  K = NULL,
+  use_dynamic_reg = TRUE,
+  nsave = 1000,
+  nburn = 1000,
+  nskip = 2,
+  mcmc_params = list("beta", "fk", "alpha", "mu_k", "ar_phi"),
+  X_Tp1 = 1,
+  use_obs_SV = FALSE,
+  includeBasisInnovation = FALSE,
+  Con_mat = NULL
+)
 }
 \arguments{
 \item{Y}{the \code{T x m} data observation matrix, where \code{T} is the number of time points and \code{m} is the number of observation points (\code{NA}s allowed)}
@@ -61,6 +72,6 @@ A named list of the \code{nsave} MCMC samples for the parameters named in \code{
 Runs the MCMC for the dynamic function-on-scalars regression model based on
 an reduced-rank expansion. Here, we assume the factor regression has AR(1) errors.
 This particular sampler loops over the k=1,...,K factors, so the sampler is
-O(T*K*p^3) instead of O(T*(K*p)^3). For this variation, we assume normal-inverse-gamma
+O(T\emph{K}p^3) instead of O(T*(K*p)^3). For this variation, we assume normal-inverse-gamma
 priors on the innovations.
 }

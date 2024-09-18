@@ -2,7 +2,7 @@
 % Please edit documentation in R/helper_functions.R
 \name{forecast_dfosr}
 \alias{forecast_dfosr}
-\title{Forecast with a dynamic function-on-scalars regression model}
+\title{forecast_dfosr}
 \usage{
 forecast_dfosr(X_Tp1 = NULL, post_sims, factor_model = "AR")
 }
@@ -30,6 +30,7 @@ must be one of
 \code{Yfore}, the \code{m x 1} curve forecasting estimate
 }
 \description{
+Forecast with a dynamic function-on-scalars regression model
 Compute the one-step forecasting estimate
 under a dynamic function-on-scalars regression model.
 }

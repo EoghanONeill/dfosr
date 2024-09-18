@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // sampleFLC
 arma::mat sampleFLC(arma::mat BtY, arma::mat Beta, arma::mat Psi, arma::mat BtB, arma::mat Omega, arma::vec lambda, arma::vec sigmat2);
 RcppExport SEXP _dfosr_sampleFLC(SEXP BtYSEXP, SEXP BetaSEXP, SEXP PsiSEXP, SEXP BtBSEXP, SEXP OmegaSEXP, SEXP lambdaSEXP, SEXP sigmat2SEXP) {

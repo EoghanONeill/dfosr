@@ -21,7 +21,7 @@
 #' @import Rcpp
 #' @export
 sampleFLC <- function(BtY, Beta, Psi, BtB, Omega, lambda, sigmat2) {
-    .Call('_dfosr_sampleFLC', PACKAGE = 'dfosr', BtY, Beta, Psi, BtB, Omega, lambda, sigmat2)
+    .Call(`_dfosr_sampleFLC`, BtY, Beta, Psi, BtB, Omega, lambda, sigmat2)
 }
 
 #' Factor Loading Curve Sampling Algorithm
@@ -43,7 +43,7 @@ sampleFLC <- function(BtY, Beta, Psi, BtB, Omega, lambda, sigmat2) {
 #' @import Rcpp
 #' @export
 sampleFLC_orthog <- function(BtY, Beta, Psi, Omega, lambda, sigmat2) {
-    .Call('_dfosr_sampleFLC_orthog', PACKAGE = 'dfosr', BtY, Beta, Psi, Omega, lambda, sigmat2)
+    .Call(`_dfosr_sampleFLC_orthog`, BtY, Beta, Psi, Omega, lambda, sigmat2)
 }
 
 #' Factor Loading Curve Sampling Algorithm
@@ -68,7 +68,7 @@ sampleFLC_orthog <- function(BtY, Beta, Psi, Omega, lambda, sigmat2) {
 #' @import Rcpp
 #' @export
 sampleFLC_cons <- function(BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2) {
-    .Call('_dfosr_sampleFLC_cons', PACKAGE = 'dfosr', BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2)
+    .Call(`_dfosr_sampleFLC_cons`, BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2)
 }
 
 #' Factor Loading Curve Sampling Algorithm for K=1
@@ -92,7 +92,7 @@ sampleFLC_cons <- function(BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2) {
 #' @import Rcpp
 #' @export
 sampleFLC_cons_1 <- function(BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2) {
-    .Call('_dfosr_sampleFLC_cons_1', PACKAGE = 'dfosr', BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2)
+    .Call(`_dfosr_sampleFLC_cons_1`, BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2)
 }
 
 #' Factor Loading Curve Sampling Algorithm for K=1
@@ -114,6 +114,6 @@ sampleFLC_cons_1 <- function(BtY, Beta, Psi, BtB, Omega, BtCon, lambda, sigmat2)
 #' @import Rcpp
 #' @export
 sampleFLC_1 <- function(BtY, Beta, Psi, BtB, Omega, lambda, sigmat2) {
-    .Call('_dfosr_sampleFLC_1', PACKAGE = 'dfosr', BtY, Beta, Psi, BtB, Omega, lambda, sigmat2)
+    .Call(`_dfosr_sampleFLC_1`, BtY, Beta, Psi, BtB, Omega, lambda, sigmat2)
 }
 

@@ -9,15 +9,15 @@ sampleMGP(theta.jh, delta.h, a1 = 2, a2 = 3)
 \arguments{
 \item{theta.jh}{the \code{p x K} matrix with entries theta.jh ~ N(0, tau.h^-1), j=1:p, h=1:K}
 
-\item{delta.h}{the \code{K}-dimensional vector of previous delta.h values, tau.h[h] = prod(delta.h[1:h])}
+\item{delta.h}{the \code{K}-dimensional vector of previous delta.h values, tau.h\link{h} = prod(delta.h\link{1:h})}
 
-\item{a1}{the prior parameter for factor 1: delta.h[1] ~ Gamma(a1, 1)}
+\item{a1}{the prior parameter for factor 1: delta.h\link{1} ~ Gamma(a1, 1)}
 
-\item{a2}{the prior parameter for factors 2:K: delta.h[h] ~ Gamma(a2, 1) for h = 2:K}
+\item{a2}{the prior parameter for factors 2:K: delta.h\link{h} ~ Gamma(a2, 1) for h = 2:K}
 }
 \value{
 \code{delta.h}, the \code{K}-dimensional vector of multplicative components,
-where tau.h[h] = prod(delta.h[1:h])
+where tau.h\link{h} = prod(delta.h\link{1:h})
 }
 \description{
 Sample the global parameters, delta.h, with tau.h = cumprod(delta.h), from
