@@ -32,7 +32,8 @@ dfosr_bart(
   alpha_b_y = 1,
   alpha_split_prior = TRUE,
   nusig = 3,
-  sigquant = 0.9
+  sigquant = 0.9,
+  fsmallvalue = 0.001
 )
 }
 \arguments{

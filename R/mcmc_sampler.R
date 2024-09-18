@@ -1285,7 +1285,8 @@ dfosr_bart = function(Y, tau, X = NULL, K = NULL,
                  alpha_b_y = 1,
                  alpha_split_prior = TRUE,
                  nusig = 3,
-                 sigquant = 0.90){
+                 sigquant = 0.90,
+                 fsmallvalue = 0.01){
   # Some options (for now):
   sample_nu = TRUE # Sample DF parameter, or fix at nu=3?
   sample_a1a2 = TRUE # Sample a1, a2, or fix at a1=2, a2=3?
@@ -1977,7 +1978,7 @@ dfosr_bart = function(Y, tau, X = NULL, K = NULL,
       # partial_resid_temp <- partial_resid_temp + as.vector(preds.train[,jj] %*% t(Fmat[,jj]))
 
       tempdenom <- rep(Fmat[,jj], each = Tnobs)
-      tempdenom <- ifelse(abs(tempdenom) < 0.01, 0.01*sign(tempdenom), tempdenom)
+      tempdenom <- ifelse(abs(tempdenom) < fsmallvalue, fsmallvalue*sign(tempdenom), tempdenom)
 
 
       partial_resid_temp <- partial_resid_temp / tempdenom
