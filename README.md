@@ -21,8 +21,83 @@ within the MCMC algorithm.
 # Example usage
 
 ```
+
+# install the package
+devtools::install_github("EoghanONeill/dfosr")
 # Load the package:
 library(dfosr)
+
+# demonstration of improved predictions ffrom trees
+
+
+T = 200 # Number of time points
+m = 50  # Number of observation points
+p_0 = 2 # Number of true zero regression coefficients
+p_1 = 2 # Number of true nonzero regression coefficients
+
+# Simulate and store the output:
+sim_data = simulate_dfosr_bart(T = T, m = m, p_0 = p_0, p_1 = p_1)
+Y = sim_data$Y; X = sim_data$X; tau = sim_data$tau
+
+# Number of predictors, including the intercept:
+p = ncol(X)
+
+# Run the MCMC with K = 6 factors
+out = dfosr(Y = Y, tau = tau, X = X,
+            K = 6, # Number of factors
+            mcmc_params = list("beta", "fk", "alpha", "Yhat", "Ypred"),
+            use_obs_SV = FALSE#,
+            # fsmallvalue = 0.01# Parameters to save
+)
+
+# Run the MCMC with K = 6 factors
+out2 = dfosr_bart(Y = Y, tau = tau, X = X,
+            K = 6, # Number of factors
+            mcmc_params = list("beta", "fk", "alpha", "Yhat", "Ypred"),
+            use_obs_SV = FALSE#,
+            # fsmallvalue = 0.01# Parameters to save
+)
+
+
+
+# Plot a fitted value w/ posterior predictive credible intervals:
+i = sample(1:T, 1); # Select a random time i
+plot_fitted(y = Y[i,],
+            mu = colMeans(out$Yhat)[i,],
+            postY = out$Ypred[,i,],
+            y_true = sim_data$Y_true[i,],
+            t01 = tau)
+
+mean((out$Ypred[,i,] - sim_data$Y_true[i,])^2)
+
+
+plot_fitted(y = Y[i,],
+            mu = colMeans(out2$Yhat)[i,],
+            postY = out2$Ypred[,i,],
+            y_true = sim_data$Y_true[i,],
+            t01 = tau)
+
+mean((out2$Ypred[,i,] - sim_data$Y_true[i,])^2)
+
+
+MSEs_lin <- rep(NA, T)
+MSEs_BART <- rep(NA, T)
+
+for(i in 1:T){
+  MSEs_lin[i] <- mean((out$Ypred[,i,] - sim_data$Y_true[i,])^2)
+  MSEs_BART[i] <- mean((out2$Ypred[,i,] - sim_data$Y_true[i,])^2)
+}
+
+
+cbind(1:T, MSEs_lin, MSEs_BART)
+
+
+
+
+
+
+########################
+
 
 T = 200 # Number of time points
 m = 50  # Number of observation points

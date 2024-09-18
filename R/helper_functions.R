@@ -109,6 +109,133 @@ forecast_dfosr = function(X_Tp1 = NULL,
   }
   Yfore
 }
+
+#----------------------------------------------------------------------------
+#' Simulate a dynamic function-on-scalars regression model with nonlinearities in beta equation
+#'
+#' Simulate data from a dynamic function-on-scalars regression model, allowing for
+#' autocorrelated errors and (possibly) dynamic regression coefficients random effects.
+#' The predictors are contemporaneously independent but (possibly) autocorrelated.
+#'
+#' @param T number of observed curves (i.e., number of time points)
+#' @param m total number of observation points (i.e., points along the curve)
+#' @param RSNR root signal-to-noise ratio
+#' @param K_true rank of the model (i.e., number of basis functions used for the functional data simulations)
+#' @param p_0 number of true zero regression coefficients
+#' @param p_1 number of true nonzero regression coefficients
+#' @param use_dynamic_reg logical; if TRUE, simulate dynamic regression coefficients; otherwise static
+#' @param sparse_factors logical; if TRUE, then for each nonzero predictor j,
+#' sample a subset of k=1:K_true factors to be nonzero
+#' @param use_obs_SV logical; if TRUE, include stochastic volatility term for the error variance
+#' @param ar1 AR(1) coefficient for time-correlated predictors
+#' @param prop_missing proportion of missing data (between 0 and 1); default is zero
+#'
+#' @return a list containing the following:
+#' \itemize{
+#' \item \code{Y}: the simulated \code{T x m} functional data matrix
+#' \item \code{X}: the simulated \code{T x p} design matrix
+#' \item \code{tau}: the \code{m}-dimensional vector of observation points
+#' \item \code{Y_true}: the true \code{T x m} functional data matrix (w/o noise)
+#' \item \code{alpha_tilde_true} the true \code{T x p x m} array of regression coefficient functions
+#' \item \code{alpha_arr_true} the true \code{T x p x K_true} array of (dynamic) regression coefficient factors
+#' \item \code{Beta_true} the true \code{T x K_true} matrix of factors
+#' \item \code{F_true} the true \code{m x K_true} matrix of basis (loading curve) functions
+#' \item \code{sigma_true} the true observation error standard deviation
+#' }
+#'
+#' @note The basis functions (or loading curves) are orthonormalized polynomials,
+#' so large values of \code{K_true} are not recommended.
+#'
+#' @examples
+#' # Example: simulate DFOSR
+#' sim_data = simulate_dfosr()
+#' Y = sim_data$Y; X = sim_data$X; tau = sim_data$tau
+#'
+#' @import truncdist
+#' @export
+simulate_dfosr_bart = function(T = 200,
+                          m = 100,
+                          RSNR = 5,
+                          K_true = 4,
+                          p_0 = 2,
+                          p_1 = 2,
+                          use_dynamic_reg = TRUE,
+                          sparse_factors = FALSE,
+                          use_obs_SV = FALSE,
+                          ar1 = 0,
+                          prop_missing = 0){
+  # Number of predictors:
+  p = 1 + p_1 + p_0
+
+  # Observation points:
+  tau = seq(0, 1, length.out = m)
+
+  # FLCs: orthonormalized polynomials
+  F_true = cbind(1/sqrt(m),
+                 poly(tau, K_true - 1))
+
+  # Simulate the predictors:
+  if(ar1 == 0){
+    X = cbind(1, matrix(rnorm(n = T*(p-1)), nrow = T, ncol = p-1))
+  } else X = cbind(1,
+                   apply(matrix(0, nrow = T, ncol = p-1), 2, function(x)
+                     arima.sim(n = T, list(ar = ar1), sd = sqrt(1-ar1^2))))
+
+  # True coefficients:
+  alpha_arr_true = array(0, c(T, p, K_true))
+
+  # p = 1 Intercept coefficients: just use K:1
+  alpha_arr_true[,1,] = matrix(rep(1/(1:K_true), each = T), nrow = T)
+
+  # Factor standard deviation (or scale factor) for each k:
+  #sd_k = 1/(1:K_true)
+  sd_k = sqrt(.75^(1:K_true - 1))
+
+  # p > 1: Possibly nonzero, possibly dynamic coefficients
+  if(p_1 > 0){for(j in 1:p_1){
+    # Which factors are nonzero for predictor j?
+    if(sparse_factors){ # Truncated Poisson(1)
+      k_p = sample(1:K_true, truncdist::rtrunc(n = 1, spec = 'pois', a = 1, b = K_true, lambda = 1))
+    } else k_p = 1:K_true
+
+    # Among nonzero factors, simulate dynamic (w/ sparse jumps) or static coefficients:
+    for(k in k_p) {
+      if(use_dynamic_reg){
+        alpha_arr_true[,j+1,k] = sd_k[k]*rnorm(n = 1) + sd_k[k]*cumsum(rnorm(n = T)*(rbinom(n = T, size = 1, prob = 0.01)))
+      } else alpha_arr_true[,j+1, k] = sd_k[k]*rnorm(n = 1)
+    }
+  }}
+
+  # True regression coefficient functions:
+  alpha_tilde_true = array(0, c(T, p, m))
+  for(j in 1:p) alpha_tilde_true[,j,] = tcrossprod(alpha_arr_true[,j,], F_true)
+
+  # Dynamic factors:
+  Beta_true = matrix(0, nrow = T, ncol = K_true)
+  for(k in 1:K_true) Beta_true[,k] = rowSums(X*alpha_arr_true[,,k] + 5*sin(k*X)) + arima.sim(n = T, list(ar = 0.8), sd = sqrt(1-0.8^2)*sd_k[k])
+
+  # True FTS:
+  Y_true = tcrossprod(Beta_true, F_true)
+
+  # Noise SD based on RSNR:
+  sigma_true = sd(Y_true)/RSNR
+
+  # Observed data:
+  if(use_obs_SV){
+    sigma_true = sigma_true*exp(1/2*arima.sim(n = T, list(ar = 0.9), sd = sqrt(1-0.9^2)))
+    Y = Y_true + rep(sigma_true,  m)*rnorm(m*T)
+  } else {
+    Y = Y_true + sigma_true*rnorm(m*T)
+  }
+
+  # Remove any observation points:
+  if(prop_missing > 0 ) Y[sample(1:length(Y), prop_missing*length(Y))] = NA
+
+  list(Y = Y, X = X, tau = tau,
+       Y_true = Y_true, alpha_tilde_true = alpha_tilde_true,
+       alpha_arr_true = alpha_arr_true, Beta_true = Beta_true, F_true = F_true, sigma_true = sigma_true)
+}
+
 #----------------------------------------------------------------------------
 #' Simulate a dynamic function-on-scalars regression model
 #'
