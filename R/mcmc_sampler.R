@@ -1294,7 +1294,7 @@ dfosr_softbart = function(Y, tau, X = NULL, K = NULL,
                       SB_normalize_Y = TRUE,
                       nusig = 3,
                       sigquant = 0.90,
-                      fsmallvalue = 0.01){
+                      fsmallvalue = 0){
 
 
   ecdfs   <- list()
