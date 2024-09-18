@@ -28,7 +28,8 @@ Imports:
     Matrix, 
     Rcpp, 
     refund, 
-    truncdist
+    truncdist,
+    dbarts
 Depends: 
     R (>= 2.10)
 LazyData: true
